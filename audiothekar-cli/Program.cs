@@ -47,22 +47,24 @@ public static class Program
 
     private static string SelectCategory(IEnumerable<IGrouping<string, Node>> categories)
     {
-        string selectedCategory = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title("Rubrik:")
-                .PageSize(15)
-                .AddChoices(categories.Select(x => x.Key).Order()));
-        return selectedCategory;
+        var selectionPrompt = new SelectionPrompt<string>()
+            .Title("Rubrik:")
+            .EnableSearch()
+            .PageSize(15)
+            .AddChoices(categories.Select(x => x.Key).Order());
+
+        return AnsiConsole.Prompt(selectionPrompt);
     }
 
     private static Node SelectSeries(IEnumerable<Node> nodes)
     {
-        Node selectedNode = AnsiConsole.Prompt(
-            new SelectionPrompt<Node>()
-                .Title("Reihe:")
-                .PageSize(15)
-                .AddChoices(nodes.OrderByDescending(x => x.lastItemAdded)));
-        return selectedNode;
+        var selectionPrompt = new SelectionPrompt<Node>()
+            .Title("Reihe:")
+            .EnableSearch()
+            .PageSize(15)
+            .AddChoices(nodes.OrderByDescending(x => x.lastItemAdded));
+
+        return AnsiConsole.Prompt(selectionPrompt);
     }
 
     private static List<Node> FilterDownloadableNodes(IEnumerable<Node> nodes)
